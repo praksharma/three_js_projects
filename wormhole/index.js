@@ -71,7 +71,7 @@ function updateCamera(t){
 // add fog to the scene
 // if we don't add the fog, you can see the entire path and messes with the rendering
 // you don't want to see the entire loop.
-// scene.fog = new THREE.FogExp2("black", 0.3); // 0.3 density. lower density meaning you can see distant objects
+scene.fog = new THREE.FogExp2("black", 0.3); // 0.3 density. lower density meaning you can see distant objects
 
 // create a custom edge geometry from the spline
 // the tube was used to manipulate the camera
@@ -91,12 +91,44 @@ const boxMat = new THREE.MeshBasicMaterial({
     wireframe: true
 })
 // version 1: put box on the centerline of the tube
+// for (let i=0; i < numBoxes; i += 1){
+//     const box = new THREE.Mesh(boxGeo, boxMat)
+//     const p = (i/numBoxes); // number between 0 and 1 for box numbers
+//     const pos = tubeGeo.parameters.path.getPointAt(p); // get coordinates of p in the tube
+//     box.position.copy(pos);
+//     scene.add(box)
+// }
+
+// version 2: add slight perturbation to the boxes (translation and rotation)
 for (let i=0; i < numBoxes; i += 1){
     const box = new THREE.Mesh(boxGeo, boxMat)
-    const p = (i/numBoxes); // number between 0 and 1 for box numbers
+    const p = i/numBoxes; // number between 0 and 1 for box numbers
+    console.log(p)
     const pos = tubeGeo.parameters.path.getPointAt(p); // get coordinates of p in the tube
-    box.position.copy(pos);
-    scene.add(box)
+    // add random perturbation to the tube centerline coordinates `pos` and assing it to the boxes
+    pos.x += Math.random()/3
+    pos.z += Math.random()/3
+    // assign the perturbed `pos` to the box
+    // box.position.copy(pos); # we use boxEdges for nice looking boxes
+    // add rotation to the boxes using a vector. I have to learn a lot.
+    const rote = new THREE.Vector3(
+        Math.random() / 0.1,
+        Math.random() / 0.1,
+        Math.random() / 0.1
+    )
+    // box.rotation.set(rote.x, rote.y, rote.z); # we use boxEdges for nice looking boxes
+    // scene.add(box); # we use boxEdges for nice looking boxes
+    // adding EdgesGeometry for nicer looking boxes
+    const edgesBox = new THREE.EdgesGeometry(boxGeo, 0.2)
+    const edgeBoxMat = new THREE.LineBasicMaterial({
+        color: "white"
+    });
+    const BoxEdges = new THREE.LineSegments(edgesBox, edgeBoxMat);
+    // assing Box's position and rotation to BoxEdges
+    BoxEdges.position.copy(pos);
+    BoxEdges.rotation.set(rote.x, rote.y, rote.z);
+
+    scene.add(BoxEdges);
 }
 
 function animate(t = 0){
