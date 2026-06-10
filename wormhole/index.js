@@ -117,6 +117,7 @@ const boxMat = new THREE.MeshBasicMaterial({
 // }
 
 // version 2: add slight perturbation to the boxes (translation and rotation)
+const boxes = []; // and empty array to store all the boxes for real time rotation, we need to pass it to animate somehow, so we need to store it
 for (let i=0; i < numBoxes; i += 1){
     const box = new THREE.Mesh(boxGeo, boxMat)
     const p = i/numBoxes; // number between 0 and 1 for box numbers
@@ -140,19 +141,36 @@ for (let i=0; i < numBoxes; i += 1){
     const edgeBoxMat = new THREE.LineBasicMaterial({
         color: "white"
     });
-    const BoxEdges = new THREE.LineSegments(edgesBox, edgeBoxMat);
+    const boxEdges = new THREE.LineSegments(edgesBox, edgeBoxMat);
     // assing Box's position and rotation to BoxEdges
-    BoxEdges.position.copy(pos);
-    BoxEdges.rotation.set(rote.x, rote.y, rote.z);
+    boxEdges.position.copy(pos); // set position
+    // boxEdges.rotation.set(rote.x, rote.y, rote.z); // set rotation
 
-    scene.add(BoxEdges);
+    scene.add(boxEdges); // add boxEdges to the scene
+    boxes.push(boxEdges);  // store boxEdges in boxes array for animate()
+}
+
+function rotate_Boxes(box, t){
+        boxes.forEach((box, i) => {
+        box.rotation.x += 0.01;
+        box.rotation.y += 0.05;
+        box.rotation.z += 0.02;
+    });
+    // pos = 
+    //         boxes.forEach((box, i) => {
+    //     box.position.copy = pos;
+    // });
+
 }
 
 function animate(t = 0){
     requestAnimationFrame(animate);
     // console.log(t);
     updateCamera(t); // move the camera in the tube
-    // controls.update(); // disabled the camera manipualation
+    // rotate the boxes in real time
+    rotate_Boxes(boxes, t)
+    
+    // controls.update(); // disabled the camera manipulation
     composer.render(scene, camera); // render the frame with customscomposer
 
 }
