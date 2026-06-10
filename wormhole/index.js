@@ -50,8 +50,8 @@ const tubeMat = new THREE.MeshBasicMaterial({
 });
 
 const tube = new THREE.Mesh(tubeGeo, tubeMat)
-scene.add(tube);
-// const tubeMEsh
+// the tube was used to manipulate the camera and we will turnh it off and use edge geometry for the tube 
+// scene.add(tube);
 
 
 const hemiLight = new THREE.HemisphereLight("white", "cyan");
@@ -59,7 +59,7 @@ scene.add(hemiLight);
 
 // update camera position and angle as this is a curved tube, the angle need to change
 function updateCamera(t){
-    const time = t * 0.5;
+    const time = t * 0.2;
     const looptime = 20*1000; // time to loop in the tube
     const p = (time % looptime) / looptime;
     const pos = tubeGeo.parameters.path.getPointAt(p); // percentage of total path at which you are querying the coordinates at
@@ -73,6 +73,14 @@ function updateCamera(t){
 // you don't want to see the entire loop.
 scene.fog = new THREE.FogExp2("black", 0.3); // 0.3 density. lower density meaning you can see distant objects
 
+// create a custom edge geometry from the spline
+// the tube was used to manipulate the camera
+const edges = new THREE.EdgesGeometry(tubeGeo, 0.2)
+const edgeMat = new THREE.LineBasicMaterial({
+    color: "white"
+});
+const tubeEdges = new THREE.LineSegments(edges, edgeMat);
+scene.add(tubeEdges); 
 
 function animate(t = 0){
     requestAnimationFrame(animate);
