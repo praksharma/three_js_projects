@@ -57,14 +57,31 @@ scene.add(tube);
 const hemiLight = new THREE.HemisphereLight("white", "cyan");
 scene.add(hemiLight);
 
+// update camera position and angle as this is a curved tube, the angle need to change
+function updateCamera(t){
+    const time = t * 0.5;
+    const looptime = 20*1000; // time to loop in the tube
+    const p = (time % looptime) / looptime;
+    const pos = tubeGeo.parameters.path.getPointAt(p); // percentage of total path at which you are querying the coordinates at
+    const lookAt = tubeGeo.parameters.path.getPointAt((p + 0.03) % 1); // little big ahead not a lot, so give a direction to the camera.
+    camera.position.copy(pos); // update the position of the camera
+    // camera.position.y +=0.5
+    camera.lookAt(lookAt); // update the direction of the camera
+}
+// add fog to the scene
+// if we don't add the fog, you can see the entire path and messes with the rendering
+// you don't want to see the entire loop.
+scene.fog = new THREE.FogExp2("black", 0.3); // 0.3 density. lower density meaning you can see distant objects
+
+
 function animate(t = 0){
     requestAnimationFrame(animate);
     // console.log(t);
     // Mesh.rotation.y = t*0.0005;
     // earthGroup.rotation.x = t*0.00001;
-
-    controls.update();
-    renderer.render(scene, camera);
+    updateCamera(t); // move the camera in the tube
+    // controls.update(); // disabled the camera manipualation
+    renderer.render(scene, camera); // render the frame
 
 }
 animate();
