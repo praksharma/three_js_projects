@@ -1,7 +1,7 @@
 console.log('A basic primitive');
 import * as THREE from "three";
 import { OrbitControls } from 'jsm/controls/OrbitControls.js'; // to add mouse movements
-
+import getStarfield from "./src/getStarfield.js";
 const w = window.innerWidth;
 const h = window.innerHeight; 
 const renderer = new THREE.WebGLRenderer({antialias: true});
@@ -13,7 +13,7 @@ document.body.appendChild(renderer.domElement);
 const fov = 75;
 const aspect = w/h;
 const near = 0.1;
-const far = 10;
+const far = 1000;
 
 
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
@@ -27,6 +27,13 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.03;
 
+const earthGroup = new THREE.Group(); // manipulate multiple object at the same time.
+earthGroup.rotateZ = -23.4 * Math.PI /180 // 23.4 degrees tilt of the earth
+scene.add(earthGroup);
+
+const stars = getStarfield({numStars: 2000});
+scene.add(stars);
+
 const loader = new THREE.TextureLoader();
 const geo = new THREE.IcosahedronGeometry(1,16);
 // mathematically they use something called UV mapping to put pixels from the image on the sphere.
@@ -34,9 +41,9 @@ const mat = new THREE.MeshStandardMaterial({
     map: loader.load("textures/2k_earth_daymap.jpg"),
     flatShading: false,
 });
-const mesh = new THREE.Mesh(geo, mat);
+const earthMesh = new THREE.Mesh(geo, mat);
 
-scene.add(mesh);
+earthGroup.add(earthMesh);
 
 
 const hemiLight = new THREE.HemisphereLight("white");
@@ -46,8 +53,8 @@ function animate(t = 0){
     requestAnimationFrame(animate);
     // console.log(t);
     // mesh.scale.setScalar(Math.cos(t*0.01));
-    mesh.rotation.y = t*0.00001;
-    mesh.rotation.x = t*0.00001;
+    earthGroup.rotation.y = t*0.00001;
+    earthGroup.rotation.x = t*0.00001;
 
     controls.update();
     renderer.render(scene, camera);
