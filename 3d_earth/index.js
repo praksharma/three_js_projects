@@ -1,4 +1,4 @@
-console.log('A basic primitive');
+console.log('3D EARTH');
 import * as THREE from "three";
 import { OrbitControls } from 'jsm/controls/OrbitControls.js'; // to add mouse movements
 import getStarfield from "./src/getStarfield.js";
@@ -34,11 +34,12 @@ scene.add(earthGroup);
 const stars = getStarfield({numStars: 2000});
 scene.add(stars);
 
+const detail = 16;
 const loader = new THREE.TextureLoader();
-const geo = new THREE.IcosahedronGeometry(1,16);
+const geo = new THREE.IcosahedronGeometry(1, detail);
 // mathematically they use something called UV mapping to put pixels from the image on the sphere.
 const mat = new THREE.MeshStandardMaterial({
-    map: loader.load("textures/2k_earth_daymap.jpg"),
+    map: loader.load("textures/8k_earth_daymap.jpg"),
     flatShading: false,
 });
 const earthMesh = new THREE.Mesh(geo, mat);
@@ -52,6 +53,15 @@ earthGroup.add(earthMesh);
 const sunLight = new THREE.DirectionalLight("white")
 sunLight.position.set(-2,0,+1) // x,y are classical axis and z is towards or away from you
 scene.add(sunLight);
+
+// add halo of the earth
+const haloMat = new THREE.MeshBasicMaterial({
+    map: loader.load("./textures/8k_earth_nightmap.jpg"), // use night light of earth as texture for the new mesh
+    blending: THREE.AdditiveBlending  // only preserve the bright spots, meanign we preseve the day light earth map
+});
+
+const haloMesh = new THREE.Mesh(geo, haloMat)
+earthGroup.add(haloMesh);
 
 function animate(t = 0){
     requestAnimationFrame(animate);
