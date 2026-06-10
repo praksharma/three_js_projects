@@ -156,10 +156,10 @@ function rotate_Boxes(box, t){
         box.rotation.y += 0.05;
         box.rotation.z += 0.02;
     });
-    // pos = 
-    //         boxes.forEach((box, i) => {
-    //     box.position.copy = pos;
-    // });
+
+        boxes.forEach((box, i) => {
+        box.position.x +=Math.sin(t*100)*0.01;
+    });
 
 }
 
