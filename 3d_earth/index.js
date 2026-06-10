@@ -1,7 +1,8 @@
 console.log('3D EARTH');
 import * as THREE from "three";
 import { OrbitControls } from 'jsm/controls/OrbitControls.js'; // to add mouse movements
-import getStarfield from "./src/getStarfield.js";
+import {getFresnelMat} from "./src/getFresnelMat.js" // earth halo material
+import getStarfield from "./src/getStarfield.js"; // add stars
 const w = window.innerWidth;
 const h = window.innerHeight; 
 const renderer = new THREE.WebGLRenderer({antialias: true});
@@ -34,7 +35,7 @@ scene.add(earthGroup);
 const stars = getStarfield({numStars: 2000});
 scene.add(stars);
 
-const detail = 16;
+const detail = 100;
 const loader = new THREE.TextureLoader();
 const geo = new THREE.IcosahedronGeometry(1, detail);
 // mathematically they use something called UV mapping to put pixels from the image on the sphere.
@@ -54,16 +55,16 @@ const sunLight = new THREE.DirectionalLight("white")
 sunLight.position.set(-2,0,+1) // x,y are classical axis and z is towards or away from you
 scene.add(sunLight);
 
-// add halo of the earth
-const haloMat = new THREE.MeshBasicMaterial({
+// add night sky of the earth
+const nightSkyMat = new THREE.MeshBasicMaterial({
     map: loader.load("./textures/8k_earth_nightmap.jpg"), // use night light of earth as texture for the new mesh
     blending: THREE.AdditiveBlending,  // only preserve the bright spots, meanign we preseve the day light earth map
     opacity: 0.3,
     // transparent: true,
 });
 
-const haloMesh = new THREE.Mesh(geo, haloMat)
-earthGroup.add(haloMesh);
+const nightSkyMesh = new THREE.Mesh(geo, nightSkyMat)
+earthGroup.add(nightSkyMesh);
 
 // add clouds
 const cloudsMat = new THREE.MeshBasicMaterial({
@@ -73,15 +74,22 @@ const cloudsMat = new THREE.MeshBasicMaterial({
 })
 
 const cloudMesh = new THREE.Mesh(geo, cloudsMat)
-cloudMesh.scale.setScalar(1.02)
+cloudMesh.scale.setScalar(1.001)
 earthGroup.add(cloudMesh);
+
+// Add earth's halo using Fresnel's material
+const frenselMat = getFresnelMat();
+const frenselMesh = new THREE.Mesh(geo, frenselMat);
+frenselMesh.scale.setScalar(1.001)
+earthGroup.add(frenselMesh);
+
 
 function animate(t = 0){
     requestAnimationFrame(animate);
     // console.log(t);
-    // mesh.scale.setScalar(Math.cos(t*0.01));
     earthGroup.rotation.y = t*0.00005;
     earthGroup.rotation.x = t*0.00001;
+    cloudMesh.rotation.y = t*0.00002; // override the cloud rotation as it is already part of earthGroup and make is rotate faster as in reality.
 
     controls.update();
     renderer.render(scene, camera);
