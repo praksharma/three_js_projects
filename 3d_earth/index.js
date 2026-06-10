@@ -57,11 +57,24 @@ scene.add(sunLight);
 // add halo of the earth
 const haloMat = new THREE.MeshBasicMaterial({
     map: loader.load("./textures/8k_earth_nightmap.jpg"), // use night light of earth as texture for the new mesh
-    blending: THREE.AdditiveBlending  // only preserve the bright spots, meanign we preseve the day light earth map
+    blending: THREE.AdditiveBlending,  // only preserve the bright spots, meanign we preseve the day light earth map
+    opacity: 0.3,
+    // transparent: true,
 });
 
 const haloMesh = new THREE.Mesh(geo, haloMat)
 earthGroup.add(haloMesh);
+
+// add clouds
+const cloudsMat = new THREE.MeshBasicMaterial({
+    map: loader.load("./textures/8k_earth_clouds.jpg"),
+    blending: THREE.AdditiveBlending,
+    opacity: 0.2,
+})
+
+const cloudMesh = new THREE.Mesh(geo, cloudsMat)
+cloudMesh.scale.setScalar(1.02)
+earthGroup.add(cloudMesh);
 
 function animate(t = 0){
     requestAnimationFrame(animate);
