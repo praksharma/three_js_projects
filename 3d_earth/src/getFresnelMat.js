@@ -1,3 +1,4 @@
+// stolen from https://github.com/bobbyroe/threejs-earth/tree/update-2024/src
 import * as THREE from "three";
 
 function getFresnelMat({rimHex = 0x0088ff, facingHex = 0x000000} = {}) {
