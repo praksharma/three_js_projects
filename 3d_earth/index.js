@@ -46,14 +46,18 @@ const earthMesh = new THREE.Mesh(geo, mat);
 earthGroup.add(earthMesh);
 
 
-const hemiLight = new THREE.HemisphereLight("white");
-scene.add(hemiLight);
+// const hemiLight = new THREE.HemisphereLight("white");
+// scene.add(hemiLight);
+// We can add a better directional light.
+const sunLight = new THREE.DirectionalLight("white")
+sunLight.position.set(-2,0,+1) // x,y are classical axis and z is towards or away from you
+scene.add(sunLight);
 
 function animate(t = 0){
     requestAnimationFrame(animate);
     // console.log(t);
     // mesh.scale.setScalar(Math.cos(t*0.01));
-    earthGroup.rotation.y = t*0.00001;
+    earthGroup.rotation.y = t*0.00005;
     earthGroup.rotation.x = t*0.00001;
 
     controls.update();
