@@ -3,6 +3,12 @@ import * as THREE from "three";
 import { OrbitControls } from 'jsm/controls/OrbitControls.js'; // to add mouse movements
 import spline from "./scripts/spline.js" // set of vertices ofor the path of the wormhole
 
+// glow effect for rendered lines
+import { EffectComposer } from "jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "jsm/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "jsm/postprocessing/UnrealBloomPass.js";
+
+
 const w = window.innerWidth;
 const h = window.innerHeight; 
 const renderer = new THREE.WebGLRenderer({antialias: true});
@@ -19,6 +25,17 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 camera.position.z = 2;
 const scene = new THREE.Scene();
 
+// post-processing
+const renderScene = new RenderPass(scene, camera);
+const bloomPass = new UnrealBloomPass(new THREE.Vector2(w, h), 1.5, 0.4, 100);
+bloomPass.threshold = 0.002;
+bloomPass.strength = 3.5;
+bloomPass.radius = 0;
+const composer = new EffectComposer(renderer);
+composer.addPass(renderScene);
+composer.addPass(bloomPass);
+// ---------- replace this composer with the renderer in the animate function --------------
+
 // Basic background added
 const controls = new OrbitControls(camera, renderer.domElement);
 // add smooth deceleration to the animation when mouse is used to move the object.
@@ -28,12 +45,12 @@ controls.dampingFactor = 0.03;
 console.log(spline);
 
 // create a path from the splines
-const points = spline.getPoints(100);
-const geometry = new THREE.BufferGeometry().setFromPoints(points);
-const material = new THREE.LineBasicMaterial({
-    color: "red",
-});
-const line = new THREE.Line(geometry, material);
+// const points = spline.getPoints(100);
+// const geometry = new THREE.BufferGeometry().setFromPoints(points);
+// const material = new THREE.LineBasicMaterial({
+//     color: "red",
+// });
+// const line = new THREE.Line(geometry, material);
 // scene.add(line); // just to see the line
 
 // Create a tube around the path
@@ -43,19 +60,19 @@ const tubeGeo = new THREE.TubeGeometry(spline, 250, 0.65, 20, true);
 // radialSegments — The number of segments that make up the cross-section. Expects a Integer. Default 8. 4 for square
 // closed — Is the tube open or closed. Default false.
 
-const tubeMat = new THREE.MeshBasicMaterial({
-    color: "green",
-    // side: THREE.DoubleSide, // if wireframe is disable, the interior wvbiew will be nothing, so double side render the interior side.
-    wireframe: true,
-});
+// const tubeMat = new THREE.MeshBasicMaterial({
+//     color: "green",
+//     // side: THREE.DoubleSide, // if wireframe is disable, the interior wvbiew will be nothing, so double side render the interior side.
+//     wireframe: true,
+// });
 
-const tube = new THREE.Mesh(tubeGeo, tubeMat)
+// const tube = new THREE.Mesh(tubeGeo, tubeMat)
 // the tube was used to manipulate the camera and we will turnh it off and use edge geometry for the tube 
 // scene.add(tube);
 
-
-const hemiLight = new THREE.HemisphereLight("white", "cyan");
-scene.add(hemiLight);
+// the composer doesn't need lights I guess
+// const hemiLight = new THREE.HemisphereLight("white", "cyan");
+// scene.add(hemiLight);
 
 // update camera position and angle as this is a curved tube, the angle need to change
 function updateCamera(t){
@@ -71,13 +88,13 @@ function updateCamera(t){
 // add fog to the scene
 // if we don't add the fog, you can see the entire path and messes with the rendering
 // you don't want to see the entire loop.
-scene.fog = new THREE.FogExp2("black", 0.3); // 0.3 density. lower density meaning you can see distant objects
+scene.fog = new THREE.FogExp2("black", 0.5); // 0.3 density. lower density meaning you can see distant objects
 
 // create a custom edge geometry from the spline
 // the tube was used to manipulate the camera
 const edges = new THREE.EdgesGeometry(tubeGeo, 0.2)
 const edgeMat = new THREE.LineBasicMaterial({
-    color: "white"
+    color: "red" // change tube color here
 });
 const tubeEdges = new THREE.LineSegments(edges, edgeMat);
 scene.add(tubeEdges);
@@ -103,7 +120,7 @@ const boxMat = new THREE.MeshBasicMaterial({
 for (let i=0; i < numBoxes; i += 1){
     const box = new THREE.Mesh(boxGeo, boxMat)
     const p = i/numBoxes; // number between 0 and 1 for box numbers
-    console.log(p)
+    console.log("Box position: ",p)
     const pos = tubeGeo.parameters.path.getPointAt(p); // get coordinates of p in the tube
     // add random perturbation to the tube centerline coordinates `pos` and assing it to the boxes
     pos.x += Math.random()/3
@@ -136,7 +153,7 @@ function animate(t = 0){
     // console.log(t);
     updateCamera(t); // move the camera in the tube
     // controls.update(); // disabled the camera manipualation
-    renderer.render(scene, camera); // render the frame
+    composer.render(scene, camera); // render the frame with customscomposer
 
 }
 animate();
