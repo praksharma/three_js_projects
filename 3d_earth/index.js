@@ -29,7 +29,7 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.03;
 
 const earthGroup = new THREE.Group(); // manipulate multiple object at the same time.
-earthGroup.rotateZ = -23.4 * Math.PI /180 // 23.4 degrees tilt of the earth
+earthGroup.rotation.z = -23.4 * Math.PI /180 // 23.4 degrees tilt of the earth
 scene.add(earthGroup);
 
 const stars = getStarfield({numStars: 2000});
@@ -80,7 +80,7 @@ earthGroup.add(cloudMesh);
 // Add earth's halo using Fresnel's material
 const frenselMat = getFresnelMat();
 const frenselMesh = new THREE.Mesh(geo, frenselMat);
-frenselMesh.scale.setScalar(1.001)
+frenselMesh.scale.setScalar(1.002)
 earthGroup.add(frenselMesh);
 
 
@@ -89,7 +89,7 @@ function animate(t = 0){
     // console.log(t);
     earthGroup.rotation.y = t*0.00005;
     earthGroup.rotation.x = t*0.00001;
-    cloudMesh.rotation.y = t*0.00002; // override the cloud rotation as it is already part of earthGroup and make is rotate faster as in reality.
+    cloudMesh.rotation.y = t*0.00002; // set cloud rotation faster as in reality. so net rotation will be t*(0.00005 + 0.00002)
 
     controls.update();
     renderer.render(scene, camera);
