@@ -61,7 +61,7 @@ scene.add(hemiLight);
 function updateCamera(t){
     const time = t * 0.2;
     const looptime = 20*1000; // time to loop in the tube
-    const p = (time % looptime) / looptime;
+    const p = (time % looptime) / looptime; // a number between 0 and 1
     const pos = tubeGeo.parameters.path.getPointAt(p); // percentage of total path at which you are querying the coordinates at
     const lookAt = tubeGeo.parameters.path.getPointAt((p + 0.03) % 1); // little big ahead not a lot, so give a direction to the camera.
     camera.position.copy(pos); // update the position of the camera
@@ -71,7 +71,7 @@ function updateCamera(t){
 // add fog to the scene
 // if we don't add the fog, you can see the entire path and messes with the rendering
 // you don't want to see the entire loop.
-scene.fog = new THREE.FogExp2("black", 0.3); // 0.3 density. lower density meaning you can see distant objects
+// scene.fog = new THREE.FogExp2("black", 0.3); // 0.3 density. lower density meaning you can see distant objects
 
 // create a custom edge geometry from the spline
 // the tube was used to manipulate the camera
@@ -80,13 +80,28 @@ const edgeMat = new THREE.LineBasicMaterial({
     color: "white"
 });
 const tubeEdges = new THREE.LineSegments(edges, edgeMat);
-scene.add(tubeEdges); 
+scene.add(tubeEdges);
+
+// we add boxes, 
+const numBoxes = 60;
+const size = 0.075;
+const boxGeo = new THREE.BoxGeometry(size,size,size); // a cube (l,b,h) are equal
+const boxMat = new THREE.MeshBasicMaterial({
+    color: "yellow",
+    wireframe: true
+})
+// version 1: put box on the centerline of the tube
+for (let i=0; i < numBoxes; i += 1){
+    const box = new THREE.Mesh(boxGeo, boxMat)
+    const p = (i/numBoxes); // number between 0 and 1 for box numbers
+    const pos = tubeGeo.parameters.path.getPointAt(p); // get coordinates of p in the tube
+    box.position.copy(pos);
+    scene.add(box)
+}
 
 function animate(t = 0){
     requestAnimationFrame(animate);
     // console.log(t);
-    // Mesh.rotation.y = t*0.0005;
-    // earthGroup.rotation.x = t*0.00001;
     updateCamera(t); // move the camera in the tube
     // controls.update(); // disabled the camera manipualation
     renderer.render(scene, camera); // render the frame
