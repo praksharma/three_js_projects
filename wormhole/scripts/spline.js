@@ -1,3 +1,4 @@
+// stolen from https://github.com/bobbyroe/flythru-wireframe-wormhole
 import * as THREE from 'three';
 const curvePath = [10.136184463414924, -1.374508746897471, 10.384881573913269,
 	9.1152593889854714, -1.374508746897471, 8.5846792797570011,
