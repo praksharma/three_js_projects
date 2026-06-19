@@ -14,7 +14,7 @@ document.body.appendChild(renderer.domElement);
 const fov = 75;
 const aspect = w/h;
 const near = 0.1;
-const far = 10;
+const far = 100;
 
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 camera.position.z = 5;
@@ -86,6 +86,19 @@ function visualiser(t){
 const Light = new THREE.HemisphereLight("Blue")
 Light.position.set(2,2,-15) // x,y are classical axis and z is towards or away from you
 scene.add(Light);
+const Light1 = new THREE.HemisphereLight("Blue")
+Light1.position.set(2,2,15) // x,y are classical axis and z is towards or away from you
+scene.add(Light1);
+
+// a white background world
+const world = new THREE.IcosahedronGeometry(1,8);
+const matWorld = new THREE.MeshStandardMaterial({
+    color: "white",
+    side: THREE.DoubleSide,
+});
+const worldMesh = new THREE.Mesh(world, matWorld);
+worldMesh.scale.setScalar(10)
+scene.add(worldMesh)
 
 function animate(t = 0){
     requestAnimationFrame(animate); // sort of a loop between frame and animate function
