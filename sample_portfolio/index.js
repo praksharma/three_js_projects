@@ -110,3 +110,44 @@ function animate(t = 0){
 
 }
 animate();
+
+// add mouse move eventlistener
+addEventListener("mousemove",mouseCoord)
+const mouse = {
+    x: undefined,
+    y: undefined
+}
+
+function mouseCoord(){
+    // Browser mouse coordinates:
+    // (0,0) is the top-left corner of the window.
+    // x increases to the right.
+    // y increases downward.
+
+    // Three.js Normalized Device Coordinates (NDC):
+    // (0,0) is the center of the screen.
+    // x ranges from -1 to +1.
+    // y ranges from -1 to +1.
+    console.log({
+        mouse_x: event.clientX,
+        mouse_y: event.clientY,
+        normalised_mouse_x: mouse.x,
+        normalised_mouse_y: mouse.y,
+    })
+    // Normalizing the coordinates
+    //  event.clientX / innerWidth give you [0, innerWidth] into [0, 1]
+    //      The centre of the screen is now 0.5.
+    // we multiple the thing by 2
+    //       [0, 1] -> [0, 2]
+    // and then surbtract 1
+    //       [0, 2] -> [-1, 1]
+    // normalised x = (event.clientX / innerWidth) * 2 - 1;
+    // normalised y = -((event.clientY / innerHeight) * 2 - 1);
+    // - because the browser y grows DOWNWARDS while Three.js y grows UPWARDS.
+    // now go to the console and see the outputs of the normalised coordiante are zero when mouse is at the centre.
+
+    // normalise the coordinates in the range [-1,1]
+    mouse.x = (event.clientX / innerWidth) * 2 - 1;
+    mouse.y = -((event.clientY / innerHeight) * 2 - 1);
+
+}
