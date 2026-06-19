@@ -1,5 +1,6 @@
 console.log('A basic primitive');
 import * as THREE from "three";
+import GUI from "lil-gui"; // basic GUI on web
 import { OrbitControls } from 'jsm/controls/OrbitControls.js'; // to add mouse movements
 
 const w = innerWidth;
@@ -26,11 +27,33 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.03;
 
+// GUI
+const gui = new GUI();
+const params = {
+    height_of_bubble: 0.1,
+    speed_of_bubble_movement: 0.01
+};
+const height_of_bubble = gui.add(
+    params,
+    'height_of_bubble',
+    0,
+    1
+).name('Bubble Height');
+
+const speed_of_bubble_movement = gui.add(
+    params,
+    'speed_of_bubble_movement',
+    0,
+    0.025
+).name('Bubble Speed');
+// heightSlider.name('Bubble Height');
+// speedSlider.name('Bubble Speed');
+
 // Plane: https://threejs.org/docs/?q=plane#PlaneGeometry
 const geometry = new THREE.PlaneGeometry(5, 5, 100, 100);
 
 // https://threejs.org/docs/?q=phon#MeshPhongMaterial
-const material = new THREE.MeshPhongMaterial( { color: "red", side: THREE.DoubleSide,     flatShading: true, } );
+const material = new THREE.MeshPhongMaterial( { color: "red", side: THREE.DoubleSide, flatShading: true } );
 const plane = new THREE.Mesh(geometry, material);
 scene.add(plane);
 
@@ -39,8 +62,9 @@ console.log(plane.geometry.attributes.position.array) // this be obtained form t
 
 // we can modify these coordinates of the mesh to make a wave like carpet
 //
-const height_of_bubble = 0.1; // increase for higher bubbles
-const speed_of_bubble_movement = 0.01
+// const height_of_bubble = 0.1; // increase for higher bubbles
+// const speed_of_bubble_movement = 0.01
+
 function visualiser(t){
     const {array} = plane.geometry.attributes.position; // object destructuring
     // console.log(array.length)
@@ -51,7 +75,7 @@ function visualiser(t){
         const z = array[i+2]
 
         // array[i + 2] = Math.sin(Math.tan(x) * Math.tan(y)  + Math.sin(t)*0.001 )*0.1
-        array[i + 2] = (Math.sin(x * 5 + t * speed_of_bubble_movement) * Math.cos(y * 5 + t * speed_of_bubble_movement)) * height_of_bubble;
+        array[i + 2] = (Math.sin(x * 5 + t * params.speed_of_bubble_movement) * Math.cos(y * 5 + t * params.speed_of_bubble_movement)) * params.height_of_bubble;
     }
     // tell the three.js to continuously load new vertices to the GPU. Otherwise, it will stops after copying the first time.
     // do not put this inside the loop. No need to tell Three.js 30,000 times per frame. Do it once after all vertices are changed

@@ -30,13 +30,13 @@ controls.dampingFactor = 0.03;
 const geometry = new THREE.PlaneGeometry(5, 5, 10, 10);
 
 // https://threejs.org/docs/?q=phon#MeshPhongMaterial
-const material = new THREE.MeshPhongMaterial( { color: "red", side: THREE.DoubleSide } );
+const material = new THREE.MeshPhongMaterial( { color: "red", side: THREE.DoubleSide, flatShading: true } );
 const plane = new THREE.Mesh(geometry, material);
 console.log(plane);
 console.log(plane.geometry.attributes.position.array) // this be obtained form the chromium inspect console. no need to remember it.
 
 // we can modify these coordinates of the mesh to make a jagged plane
-function visualiser(t){
+
 const {array} = plane.geometry.attributes.position; // object destructuring
 // console.log(array.length)
 for (let i = 3; i < array.length; i +=3){ // i=i+3 because the array are x,y,z so we are looping over the each x,y,z as i,i+1,i+2
@@ -45,10 +45,10 @@ for (let i = 3; i < array.length; i +=3){ // i=i+3 because the array are x,y,z s
     const y = array[i+1]
     const z = array[i+2]
 
-    array[i + 2] = Math.sin(x * 2 + y * 2 + t * 0.001)
+    array[i + 2] = z + Math.random()
 }
 scene.add(plane);
-}
+
 
 const light = new THREE.DirectionalLight({
     color: "white",
@@ -59,7 +59,6 @@ scene.add(light)
 
 function animate(t = 0){
     requestAnimationFrame(animate); // sort of a loop between frame and animate function
-    visualiser(t)
     controls.update();
     renderer.render(scene, camera);
 
