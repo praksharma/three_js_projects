@@ -1,5 +1,6 @@
 console.log('A basic primitive');
 import * as THREE from "three";
+import GUI from "lil-gui"; // basic GUI on web
 import { OrbitControls } from 'jsm/controls/OrbitControls.js'; // to add mouse movements
 
 const w = innerWidth;
@@ -34,9 +35,13 @@ const material = new THREE.MeshPhongMaterial( { color: "red", side: THREE.Double
 const plane = new THREE.Mesh(geometry, material);
 console.log(plane);
 console.log(plane.geometry.attributes.position.array) // this be obtained form the chromium inspect console. no need to remember it.
+scene.add(plane); // add the plane to the scene
+
+// run plane manipualtion the first time
+plane_coordinate_manipulation(plane)
 
 // we can modify these coordinates of the mesh to make a jagged plane
-
+function plane_coordinate_manipulation(plane){
 const {array} = plane.geometry.attributes.position; // object destructuring
 // console.log(array.length)
 for (let i = 3; i < array.length; i +=3){ // i=i+3 because the array are x,y,z so we are looping over the each x,y,z as i,i+1,i+2
@@ -47,15 +52,41 @@ for (let i = 3; i < array.length; i +=3){ // i=i+3 because the array are x,y,z s
 
     array[i + 2] = z + Math.random()
 }
-scene.add(plane);
+}
 
-
+// add lights
 const light = new THREE.DirectionalLight({
     color: "white",
     intensity: 1
 })
 light.position.set(0, 0 ,5)
 scene.add(light)
+
+
+// GUI
+const gui = new GUI()
+const world = {
+    plane: {
+        width: 5,
+        height: 5
+    }
+}
+// change width of the plane
+gui.add(world.plane, "width", 1, 10).onChange(()=>{
+    console.log(world.plane.width)
+    // delete the old plane mesh
+    plane.geometry.dispose();
+    plane.geometry = new THREE.PlaneGeometry(world.plane.width, 5, 10, 10);
+    plane_coordinate_manipulation(plane);
+})
+// change height of the plane
+gui.add(world.plane, "height", 1, 10).onChange(()=>{
+    console.log(world.plane.height)
+    // delete the old plane mesh
+    plane.geometry.dispose();
+    plane.geometry = new THREE.PlaneGeometry(5, world.plane.height, 10, 10);
+    plane_coordinate_manipulation(plane);
+})
 
 function animate(t = 0){
     requestAnimationFrame(animate); // sort of a loop between frame and animate function
