@@ -68,25 +68,40 @@ const gui = new GUI()
 const world = {
     plane: {
         width: 5,
-        height: 5
+        height: 5,
+        widthSegments: 10,
+        heightSegments: 10
     }
 }
 // change width of the plane
-gui.add(world.plane, "width", 1, 10).onChange(()=>{
-    console.log(world.plane.width)
-    // delete the old plane mesh
-    plane.geometry.dispose();
-    plane.geometry = new THREE.PlaneGeometry(world.plane.width, 5, 10, 10);
-    plane_coordinate_manipulation(plane);
-})
+gui.add(world.plane, "width", 1, 10).onChange(recreatePlane)
 // change height of the plane
-gui.add(world.plane, "height", 1, 10).onChange(()=>{
-    console.log(world.plane.height)
+gui.add(world.plane, "height", 1, 10).onChange(recreatePlane)
+// change the widthSegments
+gui.add(world.plane, "widthSegments", 1, 50).onChange(recreatePlane)
+// change the heightSegments
+gui.add(world.plane, "heightSegments", 1, 50).onChange(recreatePlane)
+
+// fucntion to assign a new width and height to the plane's Mesh and also manipualte the segments
+function recreatePlane(){
+    // this helps you expand the console.log in the console as an object.
+    console.log({
+        width: world.plane.width,
+        height: world.plane.height,
+        widthSegments: world.plane.widthSegments,
+        heightSegments: world.plane.heightSegments,
+    });
     // delete the old plane mesh
     plane.geometry.dispose();
-    plane.geometry = new THREE.PlaneGeometry(5, world.plane.height, 10, 10);
+    // assign the plane a new geometry with width and height from the GUI slider
+    plane.geometry = new THREE.PlaneGeometry(
+        world.plane.width,
+        world.plane.height,
+        world.plane.widthSegments,
+        world.plane.heightSegments);
     plane_coordinate_manipulation(plane);
-})
+    
+}
 
 function animate(t = 0){
     requestAnimationFrame(animate); // sort of a loop between frame and animate function
