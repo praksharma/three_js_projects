@@ -1,0 +1,37 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html,
+body{
+    height: 100%;
+    width: 100%;
+}
+
+body{
+        overflow-x: hidden;
+}
+#page1{
+    height: 100%;
+    width: 100%;
+    background-color: aqua;
+}
+#page2{
+    height: 100%;
+    width: 100%;
+    background-color: rgb(217, 218, 199);
+    padding: 150px;
+}
+#page3{
+    height: 100%;
+    width: 100%;
+    background-color: rgb(7, 35, 35);
+}
+
+#page2 h1{
+    font-size: 30vw;
+    text-transform: uppercase;
+    word-wrap: false;
+    /* transform: translateX(-150%);  we are doign this in gsap as animation*/
+}
