@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Three.js Projects — Prakhar</title>
+<title>Creative Frontend Examples — Prakhar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -263,18 +263,18 @@ body {
 
 <header id="hero">
   <canvas id="hero-canvas"></canvas>
-  <p class="hero-eyebrow reveal">WebGL / Three.js — Prakhar</p>
-  <h1 class="hero-title reveal">Things I built <em>in 3D.</em></h1>
+  <p class="hero-eyebrow reveal">Three.js / GSAP / bklit</p>
+  <h1 class="hero-title reveal">Interaction studies <em>for the web.</em></h1>
   <div class="hero-stats reveal">
-    <div class="stat"><span class="stat-val" id="stat-total">0</span><span>projects</span></div>
-    <div class="stat"><span class="stat-val" id="stat-tags">0</span><span>techniques</span></div>
+    <div class="stat"><span class="stat-val" id="stat-total">0</span><span>examples</span></div>
+    <div class="stat"><span class="stat-val" id="stat-tags">0</span><span>topics</span></div>
     <div class="stat"><span class="stat-val" id="stat-latest">—</span><span>latest</span></div>
   </div>
 </header>
 
 <div id="toolbar">
   <div class="search-wrap">
-    <input id="search" type="text" placeholder="search projects" autocomplete="off" spellcheck="false">
+    <input id="search" type="text" placeholder="search examples" autocomplete="off" spellcheck="false">
   </div>
   <div class="filters" id="filters">
     <button class="pill all active" data-tag="all">All</button>
@@ -289,13 +289,13 @@ body {
 <main id="grid-wrap">
   <p id="results-label"></p>
   <div id="grid">
-    <div id="empty">No projects match — try a different filter.</div>
+    <div id="empty">No examples match — try a different filter.</div>
   </div>
 </main>
 
 <footer id="outro">
-    <p class="outro-copy">More<br>shipping <em>soon.</em></p>
-    <p class="outro-label reveal">Homepage made by claude AI. <br>All animation are mine.</p>
+    <p class="outro-copy">More examples<br>shipping <em>soon.</em></p>
+    <p class="outro-label reveal">Homepage made with Claude AI. <br>All animations are mine.</p>
   <div class="outro-links">
     <a href="https://github.com/praksharma" target="_blank">GitHub</a>
     <a href="mailto:you@example.com">Email</a>
@@ -304,7 +304,7 @@ body {
 
 <script>
 // ─────────────────────────────────────────────────────────
-//  ★  YOUR PROJECTS
+//  ★  YOUR EXAMPLES
 //
 //  Optional field:
 //    thumbnail  — path to a screenshot, e.g. "./my-project/thumb.png"
@@ -312,6 +312,11 @@ body {
 //    thumbStyle — one of: 'geometry' | 'shader' | 'particles' | 'lines' | 'wave'
 //                 Controls the animated canvas style when no thumbnail image.
 //                 Auto-detected from tags if omitted.
+//
+//  Folder convention:
+//    ./threejs/example-name/index.html
+//    ./gsap/example-name/index.html
+//    ./bklit/example-name/index.html
 // ─────────────────────────────────────────────────────────
 const PROJECTS = [
   {
@@ -319,7 +324,7 @@ const PROJECTS = [
     description: "Exploring the fundamentals — scenes, cameras, geometries, and the render loop. The hello-world that kicked everything off.",
     tags: ["Three.js", "WebGL", "Geometry"],
     accentTag: "Three.js",
-    href: "./getting-started-with-threejs/index.html",
+    href: "./threejs/getting-started-with-threejs/index.html",
     year: "2026",
   },
   {
@@ -327,81 +332,89 @@ const PROJECTS = [
     description: "A 3D earth.",
     tags: ["Three.js", "Shaders"],
     accentTag: "Shaders",
-    href: "./3d_earth/index.html",
+    href: "./threejs/3d_earth/index.html",
     year: "2026",
   },
   {
-  title: "Wormhole",
-  description: "Fly through a wireframe wormhole.",
-  tags: ["Three.js", "Shaders"],
-  accentTag: "Shaders",
-  href: "./wormhole/index.html",
-  year: "2026",
-},
-{
-  title: "Transition Effect",
-  description: "Transition Effect between two scenes",
-  tags: ["Three.js", "Transition"],
-  accentTag: "Shaders",
-  href: "./transition_effect/index.html",
-  year: "2026",
-},
-{
-  title: "Physics using Rapier (Skipped)",
-  description: "Physics Engine rendering using Rapier.",
-  tags: ["Three.js", "Transition"],
-  accentTag: "Shaders",
-  href: "./physics_engine/index.html",
-  year: "2026",
-},
-{
-  title: "Intro to multiple scenes",
-  description: "Create basic multiple scene animation in three.js.",
-  tags: ["Three.js", "Plots"],
-  accentTag: "Plots",
-  href: "./multi_scene/index.html",
-  year: "2026",
-},
-{
-  title: "Intro to Plots",
-  description: "Create basic 2D plots in three.js.",
-  tags: ["Three.js", "Plots"],
-  accentTag: "Plots",
-  href: "./intro_plots/index.html",
-  year: "2026",
-},
-{
-  title: "Intro to Plots with THREE groups",
-  description: "Create basic 2D plots in three.js.",
-  tags: ["Three.js", "Plots"],
-  accentTag: "Plots",
-  href: "./intro_groups/index.html",
-  year: "2026",
-},
-{
-  title: "Wave visualiser: Modify primitive geometry",
-  description: "Wave animation with GUI controls.",
-  tags: ["Three.js", "Geometry"],
-  accentTag: "Portfolio",
-  href: "./modify_geometry/index.html",
-  year: "2026",
-},
-{
-  title: "Sample Portfolio",
-  description: "Create basic portfolio in three.js.",
-  tags: ["Three.js", "Portfolio"],
-  accentTag: "Portfolio",
-  href: "./sample_portfolio/index.html",
-  year: "2026",
-},
+    title: "Wormhole",
+    description: "Fly through a wireframe wormhole.",
+    tags: ["Three.js", "Shaders"],
+    accentTag: "Shaders",
+    href: "./threejs/wormhole/index.html",
+    year: "2026",
+  },
+  {
+    title: "Transition Effect",
+    description: "Transition effect between two scenes.",
+    tags: ["Three.js", "Transition"],
+    accentTag: "Shaders",
+    href: "./threejs/transition_effect/index.html",
+    year: "2026",
+  },
+  {
+    title: "Physics using Rapier (Skipped)",
+    description: "Physics engine rendering using Rapier.",
+    tags: ["Three.js", "Physics"],
+    accentTag: "Physics",
+    href: "./threejs/physics_engine/index.html",
+    year: "2026",
+  },
+  {
+    title: "Intro to multiple scenes",
+    description: "Create basic multiple scene animation in Three.js.",
+    tags: ["Three.js", "Scenes"],
+    accentTag: "Scenes",
+    href: "./threejs/multi_scene/index.html",
+    year: "2026",
+  },
+  {
+    title: "Intro to Plots",
+    description: "Create basic 2D plots in Three.js.",
+    tags: ["Three.js", "Plots"],
+    accentTag: "Plots",
+    href: "./threejs/intro_plots/index.html",
+    year: "2026",
+  },
+  {
+    title: "Intro to Plots with THREE groups",
+    description: "Create basic 2D plots with Three.js groups.",
+    tags: ["Three.js", "Plots"],
+    accentTag: "Plots",
+    href: "./threejs/intro_groups/index.html",
+    year: "2026",
+  },
+  {
+    title: "Wave visualiser: Modify primitive geometry",
+    description: "Wave animation with GUI controls.",
+    tags: ["Three.js", "Geometry"],
+    accentTag: "Geometry",
+    href: "./threejs/modify_geometry/index.html",
+    year: "2026",
+  },
+  {
+    title: "Hover effect and listeners",
+    description: "Create basic hover effects with Three.js pointer listeners.",
+    tags: ["Three.js", "Interaction"],
+    accentTag: "Interaction",
+    href: "./threejs/hover_effect/index.html",
+    year: "2026",
+  },
+  {
+    title: "Sample Portfolio",
+    description: "Create a basic portfolio in Three.js.",
+    tags: ["Three.js", "Portfolio"],
+    accentTag: "Portfolio",
+    href: "./threejs/sample_portfolio/index.html",
+    year: "2026",
+  },
   // ── Add more below ──
   // {
-  //   title: "Shader Noise",
-  //   description: "Fragment shader experiments — fbm, domain warping, and animated noise fields.",
-  //   tags: ["GLSL", "Shaders", "Three.js"],
-  //   href: "./shader-noise/index.html",
-  //   year: "2025",
-  //   thumbnail: "./shader-noise/thumb.png",  // optional screenshot
+  //   title: "Pinned Panel Scroll",
+  //   description: "GSAP ScrollTrigger panels with staggered text and image reveals.",
+  //   tags: ["GSAP", "ScrollTrigger", "Animation"],
+  //   href: "./gsap/pinned-panel-scroll/index.html",
+  //   year: "2026",
+  //   thumbnail: "./gsap/pinned-panel-scroll/thumb.png",
   // },
 ];
 // ─────────────────────────────────────────────────────────
@@ -913,7 +926,7 @@ function sortedFiltered() {
 function render() {
   gridEl.querySelectorAll('.card').forEach(c => c.remove());
   const list = sortedFiltered();
-  labelEl.textContent = `${list.length} of ${PROJECTS.length} project${PROJECTS.length!==1?'s':''}`;
+  labelEl.textContent = `${list.length} of ${PROJECTS.length} example${PROJECTS.length!==1?'s':''}`;
 
   if (list.length === 0) { emptyEl.style.display = 'block'; return; }
   emptyEl.style.display = 'none';
