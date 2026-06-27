@@ -1,0 +1,59 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+html,
+body{
+    background-color: black;
+}
+#box1{
+    height: 300px;
+    width: 300px;
+    background-color: crimson;
+}
+#box2{
+    height: 300px;
+    width: 300px;
+    background-color: green;
+}
+#box3{
+    height: 300px;
+    width: 300px;
+    background-color: blue;
+}
+#nav{
+    /* background: red; */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 50px;
+}
+
+#submenu{
+    display: flex;
+    gap: 50px;
+}
+
+#nav2{
+    /* background: red; */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 50px;
+}
+
+#submenu2{
+    display: flex;
+    gap: 50px;
+}
+
+#centreContent{
+    color: white;
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+}
