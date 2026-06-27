@@ -27,3 +27,17 @@ body{
     background-color: red;
     text-align: center;
 }
+#box5 h1{
+    color: white;
+    opacity: 1;
+}
+#box6 h1{
+    color: white;
+    opacity: 1;
+}
+#box7{
+    height: 300px;
+    width: 300px;
+    background-color: red;
+    text-align: center;
+}
