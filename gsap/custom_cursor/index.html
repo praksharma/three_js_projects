@@ -4,18 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GASP SVG manipulation</title>
+    <title>GASP Custom cursor</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div id="string">
-        <svg width="500" height="160">
-            <!-- <path d="M 10 80 Q 250 10 490 80" stroke="white" fill="transparent" /> USE THIS IN JAVA SCRIPT-->
-             <!-- M is starting point Q is coordinates of the quadratic curve. Use basic coordinate system. -->
-            <path d="M 10 80 Q 250 80 490 80" stroke="white" fill="transparent" />
-
-        </svg>
+    <div id="cursor"></div>
+    <div id="main">
+        <div id="image"></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"
         integrity="sha512-NcZdtrT77bJr4STcmsGAESr06BYGE8woZdSdEgqnpyqac7sugNO+Tr4bGwGF3MsnEkGKhU2KL2xh6Ec+BqsaHA=="
