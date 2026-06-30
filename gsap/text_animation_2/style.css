@@ -1,0 +1,49 @@
+@font-face {
+    font-family: "stolen-font";
+    src: url(./login.kzwa0es4w0qij3gh.woff2);
+}
+* {
+    margin: 0;
+    padding: 0;
+    color: darkmagenta;
+    font-family: "Mona Sans VF", -apple-system, BlinkMacSystemFont;
+}
+
+html,
+body {
+    background-color: brown;
+    height: 100%;
+    width: 100%;
+}
+
+#page1,#page2,#page3 {
+    height: 30vh;
+    width: 100%;
+}
+
+#move {
+    background-color: lightblue;
+    display: flex;
+    padding: 0 3vw;
+    overflow-x: hidden;
+}
+
+.marque{
+    display: flex;
+    /* align everything in 1 line using flex-shrink */
+    flex-shrink: 0;
+    align-items: center;
+    flex-direction: row;
+    gap: 3vw;
+    padding: 1vw 1vw;
+    /* -100% transform will fill left and right side with text and then overflow-x to hide it */
+    transform: translateX(-100%);
+}
+.marque img {
+    height: 80px;
+}
+
+.marque h1 {
+    font-size: 70px;
+    font-family: "stolen-font"
+}

@@ -53,7 +53,7 @@ gsap.from(".b",{
     opacity: 0,
     stagger: -0.2 // a negative will reverse the animation
 })
-
+////////// REPEAT AGAIN FOR H2
 splittedText = h2Text.split("")
 // console.log(splittedText)
 
