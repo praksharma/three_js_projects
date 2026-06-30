@@ -2,6 +2,9 @@
 var h1 = document.querySelector("h1") // select the h1
 var h1Text = h1.textContent
 
+var h2 = document.querySelector("h2")
+var h2Text = h2.textContent
+
 console.log(h1Text)
 // split the letter in the h1 tag string (innerHTML)
 splittedText = h1Text.split("") // you can type " ", "e" or anything. I nothing is typed, meaning "", then it splits the individual characters.
@@ -49,4 +52,21 @@ gsap.from(".b",{
     duration:1,
     opacity: 0,
     stagger: -0.2 // a negative will reverse the animation
+})
+
+splittedText = h2Text.split("")
+// console.log(splittedText)
+
+clutter = "" //empty string
+splittedText.forEach(function(elem,idx){
+    // console.log(elem, idx)
+    clutter += `<span class="c">${elem}</span>`
+})
+
+h2.innerHTML = clutter; // reassign the clutter to h2
+
+gsap.from(".c",{
+    y: 100,
+    duration:1,
+    stagger: 0.2
 })
